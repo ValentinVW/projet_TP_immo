@@ -3,16 +3,19 @@
 namespace App\Controller\Back;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+
+/*AbstractController accède au méthide d'assistance: https://symfony.com/doc/current/controller.html#the-base-controller-class-services
+Pour avoir accès à  des méthodes commme $this->render(): https://symfony.com/doc/current/controller.html#controller-rendering-templates */
 
 class AnnoncesController extends AbstractController
 {
   /**
-  * @Route("/", name="back_annonces_list", methods={"GET"})
+  * @Route("/annonce", name="back_annonces_list", methods={"GET"})
   */
   public function list(): Response
   {
-
   }
 
   /**
@@ -30,7 +33,6 @@ class AnnoncesController extends AbstractController
   {
     
   }
-
 
   /**
   * @Route("/delete/{id<\d+>}", name="back_annonces_delete", methods={"POST"})

@@ -3,13 +3,14 @@
 namespace App\Controller\Back;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 
 class UserController extends AbstractController
 {
   /**
-  * @Route("/", name="back_user_list", methods={"GET"})
+  * @Route("/user", name="back_user_list", methods={"GET"})
   */
   public function list(): Response
   {
