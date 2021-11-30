@@ -3,30 +3,32 @@
 namespace App\Entity;
 
 use DateTime;
-
+use Symfony\Component\Validator\Constraints as Assert;
 // applique la logique de mapping via l'annotation @ORM
 // qui correspond à un dossier "Mapping" de Doctrine
 // DOC : https://symfony.com/doc/current/doctrine.html
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+//use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 // avec @ORM ma class est maintenant une entité
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class UserController
+class User implements UserInterface
 {
   /**
    * @ORM\Id
    * @ORM\GeneratedValue
    * @ORM\Column(type="integer")
+   * //@Groups({"create_user", "read_user"})
    */
   private $id;
 
   /**
    * @ORM\Column(type="string", length=255)
-   * @Assert\Email()
-   * @Assert\NotBlank
-   * @Assert\Email
    */
   private $email;
 
@@ -42,11 +44,6 @@ class UserController
 
   /**
    * @ORM\Column(type="string", length=255)
-   * 
-   * Minimum 8 charactères, une majuscule, un chiffre et un caractère spécial.
-   * @Assert\Regex("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&-\/])[A-Za-z\d@$!%*#?&-\/]{8,}$/", message="Minimum 8 charactères, une majuscule, un chiffre et un caractère spécial.")
-   * @Assert\NotCompromisedPassword
-   * @Assert\NotBlank
    */
   private $password;
 
@@ -57,6 +54,7 @@ class UserController
 
   /**
    * @ORM\Column(type="datetime")
+   * //@Groups({"create_user", "user_page"})
    */
   private $created_at;
 
@@ -87,7 +85,7 @@ class UserController
     return $this->name;
   }
 
-  public function setame(string $name): self
+  public function setname(string $name): self
   {
     $this->name = $name;
 
@@ -144,5 +142,17 @@ class UserController
     $this->updated_at = $updated_at;
 
     return $this;
+  }
+
+  public function getRoles(): ?array
+  {
+      return $this->roles;
+  }
+
+  public function setRoles(array $roles): self
+  {
+      $this->roles = $roles;
+
+      return $this;
   }
 }

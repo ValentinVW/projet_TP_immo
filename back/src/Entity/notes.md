@@ -1,3 +1,8 @@
+### Vérifier que tout est OK avec doctrine
+
+php bin/console doctrine:schema:validate
+
+
 ### 1.créer un fichier dans le dossier migration
 
 bin/console make:migration

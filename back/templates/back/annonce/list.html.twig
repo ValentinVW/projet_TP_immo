@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonce List{% endblock %}
+
+{% block body %}
+
+<div class="container mb-auto">
+	<div class="row d-flex">
+		<div class="col-11"><h1>Liste des Annonces</h1></div>
+		<div class="col-1 d-flex align-items-center"><a href="{{ path('back_annonce_create') }}" class="btn btn-success">Ajouter</a></div>
+    </div>
+    <table class="table table-hover table-dark table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Content</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for annonce in annonces %}
+            <tr>
+                <td>{{ annonce.id }}</td>
+                <td>{{ annonce.content}}</td>
+                <form action="{{ path('back_annonce_update', {id: annonce.id}) }}" method="get">
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="submit" class="btn btn-success edit"><i class="far fa-edit"></i></i></button>
+                        </div>
+                    </td>
+                </form>
+                <form action="{{ path('back_annonce_delete', {id: annonce.id}) }}" method="post">
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <button type="submit" class="btn btn-danger delete"><i class="far fa-trash-alt"></i></button>
+                        </div>
+                    </td>
+                </form>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Aucune annonce trouvé :'(</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
