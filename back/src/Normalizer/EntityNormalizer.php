@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 /**
  * Entity normalizer
  */
-class EntityNormalizer implements DenormalizerInterface
+class EntityNormalizer implements DenormalizerInterface //!  pour la dénormalisation (tableau vers objet)
 {
     /** @var EntityManagerInterface **/
     protected $em;
@@ -34,3 +34,10 @@ class EntityNormalizer implements DenormalizerInterface
         return $this->em->find($class, $data);
     }
 }
+//! ENQUETE
+//! Sérializer : https://symfony.com/doc/current/components/serializer.html , comment utiliser : https://symfony.com/doc/current/serializer.html
+/**
+ * Transforme des objets dans un format spécifique
+ * Serializer dans controller api car il reçoit les données ainsi que les méthodes les classes qui ont besoin de recevoir des données (en json dans notre cas)
+ * 
+ */

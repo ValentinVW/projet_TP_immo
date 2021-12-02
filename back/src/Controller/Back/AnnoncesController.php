@@ -5,6 +5,7 @@ namespace App\Controller\Back;
 use App\Entity\Annonce;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\AnnonceRepository;
+use Symfony\Component\HttpFoundation\Request;
 //use App\Form\AnnonceType; //! on peux créer des formulaires avec symfony
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,12 +28,25 @@ class AnnoncesController extends AbstractController
   /**
    * @Route("/create", name="back_annonces_create", methods={"GET","POST"})
    */
-//  public function create(Request $request): Response
-//  {
-//    $annonce = new Annonce();
-//    $form = $this->createForm(AnnonceType::class, $annonce);
-//    $form->handleRequest($request);
-//  }
+  public function create(Request $request): Response
+  {
+    $annonce = new Annonce();
+    $form = $this->createForm(AnnonceType::class, $annonce);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      $entityManager = $this->getDoctrine()->getManager();
+      $entityManager->persist($annonce);
+      $entityManager->flush();
+
+      return $this->redirectToRoute('back_annonce_list', [], Response::HTTP_SEE_OTHER);
+  }
+
+  return $this->renderForm('back/annonce/create.html.twig', [
+      'annonce' => $annonce,
+      'form' => $form,
+  ]);
+  }
 
   /**
    * @Route("/update/{id<\d+>}", name="back_annonces_update", methods={"GET","POST"})
