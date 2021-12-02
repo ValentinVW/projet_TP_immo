@@ -5,8 +5,9 @@ namespace App\Controller\Back;
 use App\Entity\Annonce;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\AnnonceRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-//use App\Form\AnnonceType; //! on peux créer des formulaires avec symfony
+use App\Form\AnnonceType; //! on peux créer des formulaires avec symfony
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,7 +27,7 @@ class AnnoncesController extends AbstractController
   }
 
   /**
-   * @Route("/create", name="back_annonces_create", methods={"GET","POST"})
+   * @Route("/create", name="back_annonce_create", methods={"GET","POST"})
    */
   public function create(Request $request): Response
   {
@@ -48,17 +49,74 @@ class AnnoncesController extends AbstractController
   ]);
   }
 
+   /**
+     * @Route("/read/{id<\d+>}", name="back_annonce_read", methods={"GET"})
+     */
+    public function read(Annonce $annonce = null): Response
+    {   
+        // On vérifie que le Comment existe bien
+        if (null === $annonce) {
+
+            $error = 'Cette annonce n\'existe pas';
+
+            return $this->json(['error' => $error], Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->render('back/annonce/read.html.twig', [
+            'annonce' => $annonce,
+        ]);
+    }
+
   /**
-   * @Route("/update/{id<\d+>}", name="back_annonces_update", methods={"GET","POST"})
+   * @Route("/update/{id<\d+>}", name="back_annonce_update", methods={"GET","POST"})
    */
-  public function update(): Response
+  public function update(Request $request, Annonce $annonce = null): Response
   {
+     // On vérifie que le Comment existe bien
+     if (null === $annonce) {
+
+      $error = 'Cette annonce n\'existe pas';
+
+      return $this->json(['error' => $error], Response::HTTP_NOT_FOUND);
+  }
+  
+  $form = $this->createForm(AnnonceType::class, $annonce);
+  $form->handleRequest($request);
+
+  if ($form->isSubmitted() && $form->isValid()) {
+      $this->getDoctrine()->getManager()->flush();
+
+      return $this->redirectToRoute('back_annonce_list', [], Response::HTTP_SEE_OTHER);
+  }
+
+  return $this->renderForm('back/annonce/update.html.twig', [
+      'annonce' => $annonce,
+      'form' => $form,
+  ]);
   }
 
   /**
-   * @Route("/delete/{id<\d+>}", name="back_annonces_delete", methods={"POST"})
+   * @Route("/delete/{id<\d+>}", name="back_annonce_delete", methods={"POST"})
    */
-  public function delete(): Response
-  {
-  }
+  public function delete(Request $request, Annonce $annonce = null, EntityManagerInterface $em): Response
+    {
+        // On vérifie que le Comment existe bien
+        if (null === $annonce) {
+
+            $error = 'Ce commentaire n\'existe pas';
+
+            return $this->json(['error' => $error], Response::HTTP_NOT_FOUND);
+        }
+        
+        // if ($this->isCsrfTokenValid('delete'.$annonce->getId(), $request->request->get('_token'))) {
+        //     $em->remove($user);
+        //     $em->flush();
+        // }
+                
+        // Il existe bien, donc on envoie la demande de suppression
+        $em->remove($annonce);
+        $em->flush();
+        
+        return $this->redirectToRoute('back_annonce_list', [], Response::HTTP_SEE_OTHER);
+    }
 }

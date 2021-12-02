@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 // avec @ORM ma class est maintenant une entité
 /**
  * @ORM\Entity(repositoryClass=AnnonceRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Annonce
 {
@@ -27,10 +28,12 @@ class Annonce
    * @ORM\Column(type="string", length=100)
    */
 
-  /**
-   * @ORM\ManyToOne(targetEntity=User::class)
-   * @ORM\JoinColumn(nullable=false)
-   */
+ /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="annonces")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"new_annonce"})
+     * @Assert\NotBlank
+     */
   private $user;
 
   /**
@@ -85,7 +88,6 @@ class Annonce
    */
   private $updated_at;
 
-  private $delete_at;
 
   public function getId(): ?int
   {
@@ -286,23 +288,6 @@ class Annonce
     return $this;
   }
 
-  
-  public function getDelete_at()
-  {
-    return $this->delete_at;
-  }
-
-  /**
-   * Set the value of delete_at
-   *
-   * @return  self
-   */ 
-  public function setDelete_at(DateTime $delete_at)
-  {
-    $this->delete_at = $delete_at;
-
-    return $this;
-  }
 
   public function getCreatedAt(): ?\DateTimeInterface
   {

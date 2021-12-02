@@ -11,11 +11,21 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 //use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 // avec @ORM ma class est maintenant une entité
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * 
+ * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ * fields={"email"},
+ * message="L'email que vous avez indiqué est déjà utilisé !")
+ * @UniqueEntity(
+ * fields={"nickname"},
+ * message="Le pseudo que vous avez indiqué est déjà utilisé ! Désolé :/")
  */
 class User implements UserInterface
 {
@@ -23,28 +33,41 @@ class User implements UserInterface
    * @ORM\Id
    * @ORM\GeneratedValue
    * @ORM\Column(type="integer")
-   * //@Groups({"create_user", "read_user"})
+   * @Groups({"create_user", "read_user"})
    */
   private $id;
 
-  /**
-   * @ORM\Column(type="string", length=255)
-   */
+ /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Email()
+     * @Groups({"create_user", "user_page"})
+     * @Assert\NotBlank
+     * @Assert\Email
+     */
   private $email;
 
   /**
-   * @ORM\Column(type="string", length=100)
-   */
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"create_user", "new_annonce", "user_page"})
+     * @Assert\NotBlank
+     */
   private $name;
 
-  /**
-   * @ORM\Column(type="string", length=100)
-   */
+ /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"create_user", "new_annonce", "user_page"})
+     * @Assert\NotBlank
+     */
   private $surname;
 
   /**
-   * @ORM\Column(type="string", length=255)
-   */
+     * @ORM\Column(type="string", length=255)
+     * 
+     * Minimum 8 charactères, une majuscule, un chiffre et un caractère spécial.
+     * @Assert\Regex("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&-\/])[A-Za-z\d@$!%*#?&-\/]{8,}$/", message="Minimum 8 charactères, une majuscule, un chiffre et un caractère spécial.")
+     * @Assert\NotCompromisedPassword
+     * @Assert\NotBlank
+     */
   private $password;
 
   /**
@@ -53,15 +76,21 @@ class User implements UserInterface
   private $roles = [];
 
   /**
-   * @ORM\Column(type="datetime")
-   * //@Groups({"create_user", "user_page"})
-   */
+     * @ORM\Column(type="datetime")
+     * @Groups({"create_user", "user_page"})
+     */
   private $created_at;
 
   /**
    * @ORM\Column(type="datetime", nullable=true)
    */
   private $updated_at;
+
+  public function __toString()
+    {
+      return $this->surname;
+      return $this->name;
+    }
 
   public function __construct()
     {
