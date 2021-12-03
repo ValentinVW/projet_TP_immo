@@ -9,10 +9,10 @@ class PasswordHasher
 {
     private $hasherPassword;
 
-    public function __construct(UserPasswordHasherInterface $hasherPassword)
-    {
-        $this->hasherPassword = $hasherPassword;
-    }
+  //  public function __construct(UserPasswordHasherInterface $hasherPassword)
+    //{
+   //     $this->hasherPassword = $hasherPassword;
+  //  }
 
     /**
      * Hash un password donné

@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTime;
 use App\Repository\AnnonceRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 // applique la logique de mapping via l'annotation @ORM
 // qui correspond à un dossier "Mapping" de Doctrine
 // DOC : https://symfony.com/doc/current/doctrine.html
@@ -94,12 +95,12 @@ class Annonce
     return $this->id;
   }
 
-  public function getuser(): ?string
+  public function getuser(): ?User
   {
     return $this->user;
   }
 
-  public function setuser(string $user): self
+  public function setuser(?User $user): self
   {
     $this->user = $user;
 

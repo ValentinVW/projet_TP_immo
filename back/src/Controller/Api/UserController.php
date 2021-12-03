@@ -20,10 +20,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class UserController extends AbstractController
 {
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
+   // public function __construct(Security $security)
+   // {
+     //   $this->security = $security;
+   // }
 
     /**
      * Endpoint permettant au Front d'enregistrer un utilisateur

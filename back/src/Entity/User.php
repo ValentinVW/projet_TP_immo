@@ -24,8 +24,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * fields={"email"},
  * message="L'email que vous avez indiqué est déjà utilisé !")
  * @UniqueEntity(
- * fields={"nickname"},
- * message="Le pseudo que vous avez indiqué est déjà utilisé ! Désolé :/")
+ * fields={"name", "surname"},
+ * message="Identité déja prise")
  */
 class User implements UserInterface
 {
@@ -85,6 +85,12 @@ class User implements UserInterface
    * @ORM\Column(type="datetime", nullable=true)
    */
   private $updated_at;
+
+  /**
+  * @ORM\OneToMany(targetEntity=Annonce::class, mappedBy="user", orphanRemoval=true)
+  * @Groups("user_page")
+  */
+  private $annonces;
 
   public function __toString()
     {
