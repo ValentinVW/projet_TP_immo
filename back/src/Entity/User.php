@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 //use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UserRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -121,24 +122,24 @@ class User implements UserInterface
     return $this;
   }
 
-  public function getname(): ?string
+  public function getName(): ?string
   {
     return $this->name;
   }
 
-  public function setname(string $name): self
+  public function setName(string $name): self
   {
     $this->name = $name;
 
     return $this;
   }
 
-  public function getsurname(): ?string
+  public function getSurname(): ?string
   {
     return $this->surname;
   }
 
-  public function setsurname(string $surname): self
+  public function setSurname(string $surname): self
   {
     $this->surname = $surname;
 

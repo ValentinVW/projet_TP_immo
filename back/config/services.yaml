@@ -20,7 +20,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
-            
+
     # Listener pour l'authentification via JWT Token (permet l'envoi de datas personnalisées en plus du token)
     acme_api.event.authentication_success_listener:
         class: App\EventListener\AuthenticationSuccessListener
@@ -40,6 +40,5 @@ services:
                 name: 'doctrine.orm.entity_listener'
                 event: 'preUpdate'
                 entity: 'App\Entity\User'
-
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

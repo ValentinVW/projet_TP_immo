@@ -14,7 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 /*AbstractController accède au méthode d'assistance: https://symfony.com/doc/current/controller.html#the-base-controller-class-services
 Pour avoir accès à  des méthodes commme $this->render(): https://symfony.com/doc/current/controller.html#controller-rendering-templates */
 
-class AnnoncesController extends AbstractController
+
+class AnnonceController extends AbstractController
 {
   /**
    * @Route("/", name="back_annonce_list", methods={"GET"})

@@ -4,12 +4,13 @@ namespace App\Entity;
 
 use DateTime;
 use App\Repository\AnnonceRepository;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 // applique la logique de mapping via l'annotation @ORM
 // qui correspond à un dossier "Mapping" de Doctrine
 // DOC : https://symfony.com/doc/current/doctrine.html
-use Doctrine\ORM\Mapping as ORM;
+
 
 // avec @ORM ma class est maintenant une entité
 /**
@@ -95,24 +96,24 @@ class Annonce
     return $this->id;
   }
 
-  public function getuser(): ?User
+  public function getUser(): ?User
   {
     return $this->user;
   }
 
-  public function setuser(?User $user): self
+  public function setUser(?User $user): self
   {
     $this->user = $user;
 
     return $this;
   }
 
-  public function getname(): ?string
+  public function getName(): ?string
   {
     return $this->name;
   }
 
-  public function setname(string $name): self
+  public function setName(string $name): self
   {
     $this->name = $name;
 
